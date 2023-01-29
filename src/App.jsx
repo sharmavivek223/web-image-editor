@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import reactLogo from './assets/react.svg';
 import FilerobotImageEditor, {
   TABS,
@@ -39,6 +39,13 @@ function App() {
     }
   }, []);
 
+  const handleDownload = useCallback((i) => {
+    const imgObj = designs[i]?.imageObj;
+    var a = document.createElement('a'); //Create <a>
+    a.href = imgObj.imageBase64; //Image Base64 Goes here
+    a.download = imgObj.fullName; //File name Here
+    a.click(); //Downloaded file
+  }, []);
   return (
     <div className="App">
       <button onClick={openImgEditor}>Open Filerobot image editor</button>
@@ -106,7 +113,8 @@ function App() {
             <div className="design" key={i}>
               {`${i + 1}. `}
               {el?.imageObj?.name}{' '}
-              <button onClick={() => setActiveDesign(i)}>Load</button>
+              <button onClick={() => setActiveDesign(i)}>Load</button>{' '}
+              <button onClick={() => handleDownload(i)}>Download</button>
             </div>
           ))}
         </div>
